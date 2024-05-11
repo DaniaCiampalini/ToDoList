@@ -16,6 +16,7 @@ public:
     void displayUncompletedTasks() const;
     void markAsCompleted(const std::string& title);
     int findTaskIndex(const std::string& title) const;
+    void organizeTasks();
 
 private:
     static const int MAX_SIZE = 100;

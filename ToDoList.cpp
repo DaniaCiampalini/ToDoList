@@ -60,7 +60,7 @@ void ToDoList::markAsCompleted(const std::string& title) {
             return;
         }
     }
-    std::cout << "Item not found." << std::endl;
+    std::cout << "Task not found." << std::endl;
 }
 
 int ToDoList::findTaskIndex(const std::string &title) const {
@@ -70,4 +70,20 @@ int ToDoList::findTaskIndex(const std::string &title) const {
         }
     }
     return -1;
+}
+
+void ToDoList::organizeTasks() {
+    for (int i = 0; i < numTasks; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < numTasks; j++) {
+            if (tasks[j].getPriority() < tasks[minIndex].getPriority()) {
+                minIndex = j;
+            }
+        }
+        if (minIndex != i) {
+            ToDo tmp = tasks[i];
+            tasks[i] = tasks[minIndex];
+            tasks[minIndex] = tmp;
+        }
+    }
 }
