@@ -1,7 +1,7 @@
 
 #include "ToDo.h"
 
-ToDo::ToDo() : completed(false) {}
+ToDo::ToDo() : completed(false), priority(0)  {}
 ToDo::ToDo(std::string title, std::string description) : ToDo() {
     title = std::move(title);
     description = std::move(description);
