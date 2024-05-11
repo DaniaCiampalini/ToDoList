@@ -34,3 +34,11 @@ bool ToDo::isCompleted() const {
 void ToDo::setCompleted(bool isCompleted) {
     completed = isCompleted;
 }
+
+int ToDo::getPriority() const {
+    return priority;
+}
+
+void ToDo::setPriority(int newPriority) {
+    priority = newPriority;
+}

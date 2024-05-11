@@ -16,12 +16,15 @@ public:
     void markAsCompleted();
     bool isCompleted() const;
     void setCompleted(bool isCompleted);
+    int getPriority() const;
+    void setPriority(int newPriority);
 
 
 private:
     std::string title;
     std::string description;
     bool completed;
+    int priority{};
 
 
 };
