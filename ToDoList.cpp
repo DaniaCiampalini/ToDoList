@@ -75,14 +75,11 @@ void ToDoList::markAsCompleted(const std::string& title) {
     }
 }
 
+//Instead of using a nested loop to compare and swap elements, it's better to use the std::sort algorithm
 void ToDoList::organizeTasks() {
-    for (int i = 0; i < tasks.size(); i++) {
-        for (int j = i + 1; j < tasks.size();j++) {
-            if (tasks[i].getPriority() > tasks[j].getPriority()) {
-                std::swap(tasks[i], tasks[j]);
-            }
-        }
-    }
+    std::sort(tasks.begin(), tasks.end(), [](const ToDo& a, const ToDo& b) {  //lambda function to define the comparator inline
+        return a.getPriority() < b.getPriority();
+    });
 }
 
 int ToDoList::findTaskIndex(const std::string& title) const {
