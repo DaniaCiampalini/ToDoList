@@ -22,10 +22,16 @@ void ToDoList::removeTask(const std::string& title) {
                                [&title](const ToDo& task) {return task.getTitle() == title;}), tasks.end());
 }
 
+/*modifyTask uses std::find_if, which takes three arguments: the tasks vector,
+ * a lambda function that checks if the task's title matches the given title
+ * and an empty binary predicate.*/
 void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
-    int index = findTaskIndex(title);
-    if (index != -1) {
-        tasks[index].modifyDescription(newDescription);
+    auto it = std::find_if(tasks.begin(), tasks.end(), [&](const ToDo& task) {
+        return task.getTitle() == title;
+    });
+
+    if (it != tasks.end()) {     //if the iterator is equal to the end iterator, an error message is printed
+        it->modifyDescription(newDescription);
     } else {
         std::cerr << "Error: ToDo not found." << std::endl;
     }
