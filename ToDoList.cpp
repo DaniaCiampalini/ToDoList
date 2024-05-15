@@ -2,7 +2,12 @@
 #include <iostream>
 #include "ToDoList.h"
 
-ToDoList::ToDoList() {}
+
+/*Default constructor to ensure that the class
+ * can be instantiated without providing any arguments.
+ * The default constructor initializes the tasks vector as an empty vector.*/
+
+ToDoList::ToDoList() = default;
 
 void ToDoList::addTask(const ToDo& task) {
     tasks.push_back(task);
@@ -92,4 +97,3 @@ int ToDoList::findTaskIndex(const std::string& title) const {
 void ToDoList::removeTaskAtIndex(int index) {
     tasks.erase(tasks.begin() + index);
 }
-

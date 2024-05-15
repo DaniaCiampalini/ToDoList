@@ -23,11 +23,10 @@ public:
     void organizeTasks();
 
 private:
-    std::vector<ToDo> tasks;
+    std::vector<ToDo> tasks;   //std::vector provides faster random access to elements
 
     int findTaskIndex(const std::string& title) const;
     void removeTaskAtIndex(int index);
 };
 
 #endif //TODOLIST_H
-
