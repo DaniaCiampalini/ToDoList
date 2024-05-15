@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include "ToDoList.h"
-
+#include <algorithm>
 
 /*Default constructor to ensure that the class
  * can be instantiated without providing any arguments.
@@ -13,13 +13,13 @@ void ToDoList::addTask(const ToDo& task) {
     tasks.push_back(task);
 }
 
+/*removeTask uses the remove_if algorithm,
+ * which returns an iterator pointing to the new end of the range.
+ * The method uses a lambda function that takes an object as an argument
+ * and returns true if its title matches the specified title parameter.*/
 void ToDoList::removeTask(const std::string& title) {
-    int index = findTaskIndex(title);
-    if (index != -1) {
-        removeTaskAtIndex(index);
-    } else {
-        std::cerr << "Error: ToDo not found." << std::endl;
-    }
+    tasks.erase(std::remove_if(tasks.begin(), tasks.end(),
+                               [&title](const ToDo& task) {return task.getTitle() == title;}), tasks.end());
 }
 
 void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
