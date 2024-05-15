@@ -1,8 +1,8 @@
 
-#ifndef TODOLIST_TODOLIST_H
-#define TODOLIST_TODOLIST_H
+#ifndef TODOLIST_H
+#define TODOLIST_H
 
-#include <iostream>
+#include <vector>
 #include "ToDo.h"
 
 class ToDoList {
@@ -14,16 +14,20 @@ public:
     void modifyTask(const std::string& title, const std::string& newDescription);
 
     void displayTasks() const;
+    void displayCompletedTasks() const;
     void displayUncompletedTasks() const;
+
+    void displayTasksByPriority();
 
     void markAsCompleted(const std::string& title);
     void organizeTasks();
 
 private:
-    static const int MAX_SIZE = 100;
-    ToDo tasks[MAX_SIZE];
-    int numTasks;
+    std::vector<ToDo> tasks;
 
     int findTaskIndex(const std::string& title) const;
+    void removeTaskAtIndex(int index);
 };
-#endif //TODOLIST_TODOLIST_H
+
+#endif //TODOLIST_H
+

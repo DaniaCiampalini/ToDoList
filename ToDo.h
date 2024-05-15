@@ -6,27 +6,26 @@
 
 class ToDo {
 public:
-    ToDo(); //default constructor
-    explicit ToDo(std::string title, std::string description = ""); //non-default constructor
+    ToDo(std::string title, std::string description = "", int priority = 1);
 
     const std::string& getTitle() const;
     const std::string& getDescription() const;
+    int getPriority() const;
+
     void setTitle(std::string newTitle);
     void modifyDescription(const std::string& newDescription);
-    void markAsCompleted();
-    bool isCompleted() const;
-    void setCompleted(bool isCompleted);
-    int getPriority() const;
     void setPriority(int newPriority);
 
+    void markAsCompleted();
+    bool isCompleted() const;
+
+    void display() const;
 
 private:
     std::string title;
     std::string description;
+    int priority;
     bool completed;
-    int priority{};
-
-
 };
 
-#endif
+#endif //TODO_H
