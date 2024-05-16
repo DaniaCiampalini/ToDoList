@@ -1,36 +1,23 @@
 
-#include <iostream>
 #include "ToDoList.h"
-#include <algorithm>
-
-/*Default constructor to ensure that the class
- * can be instantiated without providing any arguments.
- * The default constructor initializes the tasks vector as an empty vector.*/
 
 ToDoList::ToDoList() = default;
 
-void ToDoList::addTask(const ToDo& task) {
-    tasks.push_back(task);
+void ToDoList::addTask(const std::string& title, const std::string& description, int priority) {
+    tasks.emplace_back(title, description, priority);
 }
 
-/*removeTask uses the remove_if algorithm,
- * which returns an iterator pointing to the new end of the range.
- * The method uses a lambda function that takes an object as an argument
- * and returns true if its title matches the specified title parameter.*/
 void ToDoList::removeTask(const std::string& title) {
     tasks.erase(std::remove_if(tasks.begin(), tasks.end(),
-                               [&title](const ToDo& task) {return task.getTitle() == title;}), tasks.end());
+                               [&](const ToDo& task) { return task.getTitle() == title; }), tasks.end());
 }
 
-/*modifyTask uses std::find_if, which takes three arguments: the tasks vector,
- * a lambda function that checks if the task's title matches the given title
- * and an empty binary predicate.*/
 void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
     auto it = std::find_if(tasks.begin(), tasks.end(), [&](const ToDo& task) {
         return task.getTitle() == title;
     });
 
-    if (it != tasks.end()) {     //if the iterator is equal to the end iterator, an error message is printed
+    if (it != tasks.end()) {
         it->modifyDescription(newDescription);
     } else {
         std::cerr << "Error: ToDo not found." << std::endl;
@@ -60,16 +47,10 @@ void ToDoList::displayUncompletedTasks() const {
 }
 
 void ToDoList::displayTasksByPriority() {
-    std::cout << "Tasks with priority:\n";
-    for (int i = 1; i <= 5; i++) {
-        std::cout << "Priority: " << i << "\n";
-        for (const auto& task : tasks) {
-            if (task.getPriority() == i) {
-                std::cout << i << ". ";
-                task.display();
-            }
-        }
-    }
+    std::sort(tasks.begin(), tasks.end(), [](const ToDo& a, const ToDo& b) {
+        return a.getPriority() > b.getPriority();
+    });
+    displayTasks();
 }
 
 void ToDoList::markAsCompleted(const std::string& title) {
@@ -81,9 +62,8 @@ void ToDoList::markAsCompleted(const std::string& title) {
     }
 }
 
-//Instead of using a nested loop to compare and swap elements, it's better to use the std::sort algorithm
 void ToDoList::organizeTasks() {
-    std::sort(tasks.begin(), tasks.end(), [](const ToDo& a, const ToDo& b) {  //lambda function to define the comparator inline
+    std::sort(tasks.begin(), tasks.end(), [](const ToDo& a, const ToDo& b) {
         return a.getPriority() < b.getPriority();
     });
 }
@@ -95,8 +75,4 @@ int ToDoList::findTaskIndex(const std::string& title) const {
         }
     }
     return -1;
-}
-
-void ToDoList::removeTaskAtIndex(int index) {
-    tasks.erase(tasks.begin() + index);
 }
