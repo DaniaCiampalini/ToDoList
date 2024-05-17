@@ -3,7 +3,7 @@
 #include <iostream>
 #include <utility>
 
-ToDo::ToDo(std::string title, std::string description, int priority)
+ToDo::ToDo(std::string  title, std::string  description, int priority)
         : title(std::move(std::move(title))), description(std::move(description)), priority(priority), completed(false) {}
 
 const std::string& ToDo::getTitle() const {
@@ -18,8 +18,8 @@ int ToDo::getPriority() const {
     return priority;
 }
 
-void ToDo::setTitle(std::string newTitle) {
-    title = std::move(newTitle);
+void ToDo::setTitle(const std::string& newTitle) {
+    title = newTitle;
 }
 
 void ToDo::modifyDescription(const std::string& newDescription) {
