@@ -26,10 +26,8 @@ int main() {
     todoList.displayTasks();
 
     std::cout << "\nUncompleted tasks:" << std::endl;
-    todoList.displayUncompletedTasks();
+    todoList.displayTasks([](const ToDo& task) { return !task.isCompleted(); });
 
-    std::cout << "\nCompleted tasks:" << std::endl;
-    todoList.displayCompletedTasks();
 
     // Remove a task
     todoList.removeTask("Do laundry");

@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "ToDo.h"
+#include <functional>
 
 class ToDoList {
 public:
@@ -13,10 +14,7 @@ public:
     void removeTask(const std::string& title);
     void modifyTask(const std::string& title, const std::string& newDescription);
 
-    void displayTasks() const;
-    void displayCompletedTasks() const;
-    void displayUncompletedTasks() const;
-
+    void displayTasks(const std::function<bool(const ToDo&)>& filter = [](const ToDo&) { return true; }) const;
     void displayTasksByPriority();
 
     void markAsCompleted(const std::string& title);
@@ -24,8 +22,6 @@ public:
 
 private:
     std::vector<ToDo> tasks;
-
-    int findTaskIndex(const std::string& title) const;
 };
 
 #endif //TODOLIST_TODOLIST_H
