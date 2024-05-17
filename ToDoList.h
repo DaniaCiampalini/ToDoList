@@ -1,9 +1,8 @@
 
-#ifndef TODOLIST_H
-#define TODOLIST_H
+#ifndef TODOLIST_TODOLIST_H
+#define TODOLIST_TODOLIST_H
 
 #include <vector>
-#include <algorithm>
 #include "ToDo.h"
 
 class ToDoList {
@@ -24,9 +23,9 @@ public:
     void organizeTasks();
 
 private:
-    std::vector<ToDo> tasks;   //std::vector provides faster random access to elements
+    std::vector<ToDo> tasks;
 
     int findTaskIndex(const std::string& title) const;
 };
 
-#endif // TODOLIST_H
+#endif //TODOLIST_TODOLIST_H

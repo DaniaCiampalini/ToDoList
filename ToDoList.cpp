@@ -1,5 +1,7 @@
 
 #include "ToDoList.h"
+#include <algorithm>
+#include <iostream>
 
 ToDoList::ToDoList() = default;
 
@@ -13,12 +15,10 @@ void ToDoList::removeTask(const std::string& title) {
 }
 
 void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
-    auto it = std::find_if(tasks.begin(), tasks.end(), [&](const ToDo& task) {
-        return task.getTitle() == title;
-    });
+    int index = findTaskIndex(title);
 
-    if(it != tasks.end()) {
-        it->modifyDescription(newDescription);
+    if (index != -1) {
+        tasks[index].modifyDescription(newDescription);
     } else {
         std::cerr << "Error: ToDo not found." << std::endl;
     }
@@ -62,12 +62,6 @@ void ToDoList::markAsCompleted(const std::string& title) {
     }
 }
 
-void ToDoList::organizeTasks() {
-    std::sort(tasks.begin(), tasks.end(), [](const ToDo& a, const ToDo& b) {
-        return a.getPriority() < b.getPriority();
-    });
-}
-
 int ToDoList::findTaskIndex(const std::string& title) const {
     for (int i = 0; i < tasks.size(); i++) {
         if (tasks[i].getTitle() == title) {
@@ -75,4 +69,10 @@ int ToDoList::findTaskIndex(const std::string& title) const {
         }
     }
     return -1;
+}
+
+void ToDoList::organizeTasks() {
+    std::sort(tasks.begin(), tasks.end(), [](const ToDo& a, const ToDo& b) {
+        return a.getPriority() > b.getPriority();
+    });
 }

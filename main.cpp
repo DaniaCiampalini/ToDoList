@@ -1,4 +1,6 @@
+
 #include "ToDoList.h"
+#include <iostream>
 
 int main() {
     ToDoList todoList;
@@ -25,6 +27,9 @@ int main() {
 
     std::cout << "\nUncompleted tasks:" << std::endl;
     todoList.displayUncompletedTasks();
+
+    std::cout << "\nCompleted tasks:" << std::endl;
+    todoList.displayCompletedTasks();
 
     // Remove a task
     todoList.removeTask("Do laundry");

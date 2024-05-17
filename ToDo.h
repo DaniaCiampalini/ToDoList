@@ -3,11 +3,10 @@
 #define TODO_H
 
 #include <string>
-#include <iostream>
 
 class ToDo {
 public:
-    explicit ToDo(std::string  title, std::string  description = "", int priority = 1);
+    explicit ToDo(std::string title, std::string description = "", int priority = 1);
 
     const std::string& getTitle() const;
     const std::string& getDescription() const;
