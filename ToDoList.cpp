@@ -17,7 +17,7 @@ void ToDoList::modifyTask(const std::string& title, const std::string& newDescri
         return task.getTitle() == title;
     });
 
-    if (it != tasks.end()) {
+    if(it != tasks.end()) {
         it->modifyDescription(newDescription);
     } else {
         std::cerr << "Error: ToDo not found." << std::endl;
