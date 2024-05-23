@@ -15,10 +15,10 @@ void ToDoList::removeTask(const std::string& title) {
                                [&](const std::unique_ptr<ToDo>& task) { return task->getTitle() == title; }), tasks.end());
 }
 
-void ToDoList::modifyTask(const std::string& title, std::string newDescription) {
+void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
     for (auto& task : tasks) {
         if (task->getTitle() == title) {
-            task->modifyDescription(std::move(newDescription));
+            task->modifyDescription(newDescription);
             return;
         }
     }
