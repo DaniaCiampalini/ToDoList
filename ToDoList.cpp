@@ -1,5 +1,6 @@
 
 #include "ToDoList.h"
+#include "ToDoListException.h"
 #include <algorithm>
 #include <iostream>
 #include <utility>
@@ -28,7 +29,7 @@ void ToDoList::modifyTask(const std::string& title, const std::string& newDescri
             return;
         }
     }
-    std::cerr << "Error: Task not found." << std::endl;
+    throw ToDoListException("Error: Task not found.");
 }
 
 void ToDoList::displayTasks(const std::function<bool(const ToDo&)>& filter) const {
@@ -54,7 +55,7 @@ void ToDoList::markAsCompleted(const std::string& title) {
             return;
         }
     }
-    std::cerr << "Error: Task not found." << std::endl;
+    throw ToDoListException("Error: Task not found.");
 }
 
 void ToDoList::organizeTasks() {
@@ -64,22 +65,16 @@ void ToDoList::organizeTasks() {
     saveTasks();
 }
 
-
-/*The 'saveTasks' method is used to save the current state of the ToDoList to a file.
- * It opens a file with the name specified in the filename member variable using a std::ofstream object.*/
 void ToDoList::saveTasks() {
     std::ofstream outfile(filename);
     if (!outfile.is_open()) {
-        std::cerr << "Error: Could not open file to save tasks." << std::endl;
-        return;
+        throw ToDoListException("Error: Could not open file to save tasks.");
     }
     for (const auto& task : tasks) {
         outfile << task->getTitle() << ',' << task->getDescription() << ',' << task->getPriority() << ',' << (task->isCompleted() ? "1" : "0") << '\n';
     }
 }
 
-/*The 'loadTasks' function is used to load tasks from a file into the ToDoList.
- * It opens a file with the name specified in the filename member variable using a std::ifstream object. */
 void ToDoList::loadTasks() {
     std::ifstream infile(filename);
     if (!infile.is_open()) {
