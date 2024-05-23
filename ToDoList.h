@@ -6,10 +6,12 @@
 #include "ToDo.h"
 #include <functional>
 #include <memory>
+#include <fstream>
+#include <sstream>
 
 class ToDoList {
 public:
-    ToDoList();
+    explicit ToDoList(std::string filename = "tasks.txt");
 
     void addTask(std::string title, std::string description = "", int priority = 1);
     void removeTask(const std::string& title);
@@ -21,8 +23,12 @@ public:
     void markAsCompleted(const std::string& title);
     void organizeTasks();
 
+    void saveTasks();
+    void loadTasks();
+
 private:
     std::vector<std::unique_ptr<ToDo>> tasks;
+    std::string filename;
 };
 
 #endif //TODOLIST_TODOLIST_H
