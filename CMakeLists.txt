@@ -8,4 +8,5 @@ add_executable(ToDoList main.cpp
         ToDo.cpp
         ToDoList.h
         ToDoList.cpp
+        ToDoListException.h
 )
