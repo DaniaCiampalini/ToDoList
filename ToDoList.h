@@ -5,14 +5,15 @@
 #include <vector>
 #include "ToDo.h"
 #include <functional>
+#include <memory>
 
 class ToDoList {
 public:
     ToDoList();
 
-    void addTask(const std::string& title, const std::string& description = "", int priority = 1);
+    void addTask(std::string title, std::string description = "", int priority = 1);
     void removeTask(const std::string& title);
-    void modifyTask(const std::string& title, const std::string& newDescription);
+    void modifyTask(const std::string& title, std::string newDescription);
 
     void displayTasks(const std::function<bool(const ToDo&)>& filter = [](const ToDo&) { return true; }) const;
     void displayTasksByPriority();
@@ -21,7 +22,7 @@ public:
     void organizeTasks();
 
 private:
-    std::vector<ToDo> tasks;
+    std::vector<std::unique_ptr<ToDo>> tasks;
 };
 
 #endif //TODOLIST_TODOLIST_H
