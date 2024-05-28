@@ -11,9 +11,9 @@
 
 class ToDoList {
 public:
-    explicit ToDoList(std::string filename = "tasks.txt");
+    explicit ToDoList(std::string  filename = "tasks.txt");
 
-    void addTask(std::string title, std::string description = "", int priority = 1);
+    void addTask(const std::string& title, const std::string& description, int priority);
     void removeTask(const std::string& title);
     void modifyTask(const std::string& title, const std::string& newDescription);
 
@@ -26,8 +26,9 @@ public:
     void saveTasks();
     void loadTasks();
 
+    std::vector<std::unique_ptr<ToDo> > tasks;
+
 private:
-    std::vector<std::unique_ptr<ToDo>> tasks;
     std::string filename;
 };
 

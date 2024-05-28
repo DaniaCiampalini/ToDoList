@@ -2,8 +2,8 @@
 #include "ToDo.h"
 #include <iostream>
 
-ToDo::ToDo(std::string title, std::string description, int priority)
-        : title(std::move(title)), description(std::move(description)), priority(priority), completed(false) {}
+ToDo::ToDo(const std::string& title, const std::string& description, int priority)
+        : title(title), description(description), priority(priority), completed(false) {}
 
 const std::string& ToDo::getTitle() const {
     return title;

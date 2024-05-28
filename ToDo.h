@@ -5,7 +5,7 @@
 
 class ToDo {
 public:
-    explicit ToDo(std::string title, std::string description = "", int priority = 1);
+    explicit ToDo(const std::string& title, const std::string& description = "", int priority = 1);
 
     const std::string& getTitle() const;
     const std::string& getDescription() const;

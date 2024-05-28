@@ -3,14 +3,13 @@
 #include "ToDoListException.h"
 #include <algorithm>
 #include <iostream>
-#include <utility>
 
-ToDoList::ToDoList(std::string filename) : filename(std::move(filename)) {
+ToDoList::ToDoList(std::string  filename) : filename(std::move(filename)) {
     loadTasks();
 }
 
-void ToDoList::addTask(std::string title, std::string description, int priority) {
-    std::unique_ptr<ToDo> newTask = std::unique_ptr<ToDo>(new ToDo(std::move(title), std::move(description), priority));
+void ToDoList::addTask(const std::string& title, const std::string& description, int priority) {
+    std::unique_ptr<ToDo> newTask = std::unique_ptr<ToDo>(new ToDo(title, description, priority));
     tasks.push_back(std::move(newTask));
     saveTasks();
 }
@@ -90,7 +89,10 @@ void ToDoList::loadTasks() {
         std::getline(iss, description, ',');
         iss >> priority;
         std::getline(iss, completed, ',');
-        addTask(std::move(title), std::move(description), priority);
+        if (completed == "1") {  //it added tasks to the list and marked only the last one as completed.
+            markAsCompleted(title);
+        }
+        addTask(title, description, priority);
         if (!tasks.empty()) {
             tasks.back()->markAsCompleted();
         }
