@@ -1,34 +1,41 @@
 
 #include "ToDoList.h"
-#include "ToDoListException.h"
-#include <algorithm>
-#include <iostream>
+#include <filesystem>
+#include <memory>
 
-ToDoList::ToDoList(std::string  filename) : filename(std::move(filename)) {
+ToDoList::ToDoList(std::string filename) : filename(std::move(filename)) {
+    clearTasks(); //to clear the tasks vector before loading tasks from the file
     loadTasks();
 }
 
 void ToDoList::addTask(const std::string& title, const std::string& description, int priority) {
-    std::unique_ptr<ToDo> newTask = std::unique_ptr<ToDo>(new ToDo(title, description, priority));
-    tasks.push_back(std::move(newTask));
+    if (findTask(title)) {  //before adding a new task, it checks if a task with the same title already exists
+        throw ToDoListException("Error: Task with the same title already exists.");
+    }
+    tasks.push_back(std::make_unique<ToDo>(title, description, priority));  //using make_unique with C++14
     saveTasks();
 }
 
 void ToDoList::removeTask(const std::string& title) {
-    tasks.erase(std::remove_if(tasks.begin(), tasks.end(),
-                               [&](const std::unique_ptr<ToDo>& task) { return task->getTitle() == title; }), tasks.end());
-    saveTasks();
+    auto it = std::remove_if(tasks.begin(), tasks.end(), [&](const std::unique_ptr<ToDo>& task) {
+        return task->getTitle() == title;
+    });
+    if (it != tasks.end()) {
+        tasks.erase(it, tasks.end());
+        saveTasks();
+    } else {
+        throw ToDoListException("Error: Task not found.");
+    }
 }
 
 void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
-    for (auto& task : tasks) {
-        if (task->getTitle() == title) {
-            task->modifyDescription(newDescription);
-            saveTasks();
-            return;
-        }
+    ToDo* taskToModify = findTask(title);
+    if (taskToModify) {
+        taskToModify->modifyDescription(newDescription);
+        saveTasks();
+    } else {
+        throw ToDoListException("Error: Task not found.");
     }
-    throw ToDoListException("Error: Task not found.");
 }
 
 void ToDoList::displayTasks(const std::function<bool(const ToDo&)>& filter) const {
@@ -47,39 +54,59 @@ void ToDoList::displayTasksByPriority() {
 }
 
 void ToDoList::markAsCompleted(const std::string& title) {
-    for (auto& task : tasks) {
-        if (task->getTitle() == title) {
-            task->markAsCompleted();
-            saveTasks();
-            return;
-        }
+    ToDo* taskToMark = findTask(title);
+    if (taskToMark) {
+        taskToMark->markAsCompleted();
+        saveTasks();
+    } else {
+        throw ToDoListException("Error: Task not found.");
     }
-    throw ToDoListException("Error: Task not found.");
 }
 
 void ToDoList::organizeTasks() {
     std::sort(tasks.begin(), tasks.end(), [](const std::unique_ptr<ToDo>& a, const std::unique_ptr<ToDo>& b) {
-        return a->getPriority() > b->getPriority();
+        return a->getPriority() < b->getPriority();
     });
     saveTasks();
 }
 
+std::string ToDoList::getFullPath(const std::string& filename) {
+    std::__fs::filesystem::path cwd = std::__fs::filesystem::current_path();
+    std::__fs::filesystem::path fullPath = cwd / filename;
+    return fullPath.string();
+}
+
+ToDo* ToDoList::findTask(const std::string& title) {
+    for (const auto& task : tasks) {
+        if (task->getTitle() == title) {
+            return task.get();
+        }
+    }
+    return nullptr;
+}
+
 void ToDoList::saveTasks() {
-    std::ofstream outfile(filename);
+    std::string fullPath = getFullPath(filename);
+    std::ofstream outfile(fullPath);
     if (!outfile.is_open()) {
         throw ToDoListException("Error: Could not open file to save tasks.");
     }
     for (const auto& task : tasks) {
         outfile << task->getTitle() << ',' << task->getDescription() << ',' << task->getPriority() << ',' << (task->isCompleted() ? "1" : "0") << '\n';
     }
+    if (!outfile.good()) {
+        throw ToDoListException("Error: Could not write to file.");
+    }
 }
 
 void ToDoList::loadTasks() {
-    std::ifstream infile(filename);
+    std::string fullPath = getFullPath(filename);
+    std::ifstream infile(fullPath);
     if (!infile.is_open()) {
-        return;
+        return; //file doesn't exist, no tasks to load
     }
     std::string line;
+    std::vector<std::unique_ptr<ToDo>> loadedTasks;
     while (std::getline(infile, line)) {
         std::istringstream iss(line);
         std::string title, description;
@@ -89,12 +116,14 @@ void ToDoList::loadTasks() {
         std::getline(iss, description, ',');
         iss >> priority;
         std::getline(iss, completed, ',');
-        if (completed == "1") {  //it added tasks to the list and marked only the last one as completed.
-            markAsCompleted(title);
+        std::unique_ptr<ToDo> task(new ToDo(title, description, priority));  //manual allocation
+        if (completed == "1") {
+            task->markAsCompleted();
         }
-        addTask(title, description, priority);
-        if (!tasks.empty()) {
-            tasks.back()->markAsCompleted();
-        }
+        loadedTasks.push_back(std::move(task));
     }
+    if (infile.bad()) {
+        throw ToDoListException("Error: Could not read from file.");
+    }
+    tasks = std::move(loadedTasks);
 }

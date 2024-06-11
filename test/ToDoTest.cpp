@@ -2,7 +2,10 @@
 #include <gtest/gtest.h>
 #include "../ToDo.h"
 
-TEST(ToDoTest, Constructor) {
+class ToDoTest : public ::testing::Test {
+};
+
+TEST_F(ToDoTest, Constructor) {
     ToDo todo("Task 1", "Description 1", 2);
     EXPECT_EQ(todo.getTitle(), "Task 1");
     EXPECT_EQ(todo.getDescription(), "Description 1");
@@ -10,7 +13,7 @@ TEST(ToDoTest, Constructor) {
     EXPECT_FALSE(todo.isCompleted());
 }
 
-TEST(ToDoTest, Setters) {
+TEST_F(ToDoTest, Setters) {
     ToDo todo("Task 1", "Description 1", 2);
     todo.setTitle("New Title");
     EXPECT_EQ(todo.getTitle(), "New Title");
@@ -20,7 +23,7 @@ TEST(ToDoTest, Setters) {
     EXPECT_EQ(todo.getPriority(), 3);
 }
 
-TEST(ToDoTest, MarkAsCompleted) {
+TEST_F(ToDoTest, MarkAsCompleted) {
     ToDo todo("Task 1", "Description 1", 2);
     todo.markAsCompleted();
     EXPECT_TRUE(todo.isCompleted());

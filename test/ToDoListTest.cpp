@@ -2,47 +2,62 @@
 #include <gtest/gtest.h>
 #include "../ToDoList.h"
 #include <sstream>
+#include <fstream>
 
-TEST(ToDoListTest, Constructor) {
-    ToDoList todoList("tasks.txt");
-    EXPECT_TRUE(todoList.tasks.empty());
+class ToDoListTest : public ::testing::Test {
+protected:
+    ToDoList todoList;
+    std::string tempFilename;
+
+    ToDoListTest() {
+        tempFilename = "temp_tasks.txt";
+        std::ofstream tempFile(tempFilename); //creates a temporary file
+        todoList = ToDoList(tempFilename);
+    }
+
+    ~ToDoListTest() override {
+        std::remove(tempFilename.c_str()); //removes the temporary file for testing
+    }
+
+    void SetUp() override {
+        todoList.clearTasks();
+    }
+};
+
+TEST_F(ToDoListTest, Constructor) {
+    EXPECT_TRUE(todoList.getTasks().empty());
 }
 
-TEST(ToDoListTest, AddTask) {
-    ToDoList todoList("tasks.txt");
+TEST_F(ToDoListTest, AddTask) {
     todoList.addTask("Task 1", "Description 1", 2);
-    EXPECT_EQ(todoList.tasks.size(), 1);
-    EXPECT_EQ(todoList.tasks[0]->getTitle(), "Task 1");
+    EXPECT_EQ(todoList.getTasks().size(), 1);
+    EXPECT_EQ(todoList.getTasks()[0]->getTitle(), "Task 1");
 }
 
-TEST(ToDoListTest, RemoveTask) {
-    ToDoList todoList("tasks.txt");
+TEST_F(ToDoListTest, RemoveTask) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.addTask("Task 2", "Description 2", 1);
     todoList.removeTask("Task 1");
-    EXPECT_EQ(todoList.tasks.size(), 1);
-    EXPECT_EQ(todoList.tasks[0]->getTitle(), "Task 2");
+    EXPECT_EQ(todoList.getTasks().size(), 1);
+    EXPECT_EQ(todoList.getTasks()[0]->getTitle(), "Task 2");
 }
 
-TEST(ToDoListTest, ModifyTask) {
-    ToDoList todoList("tasks.txt");
+TEST_F(ToDoListTest, ModifyTask) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.modifyTask("Task 1", "New Description");
-    EXPECT_EQ(todoList.tasks[0]->getDescription(), "New Description");
+    EXPECT_EQ(todoList.getTasks()[0]->getDescription(), "New Description");
 }
 
-TEST(ToDoListTest, MarkAsCompleted) {
-    ToDoList todoList("tasks.txt");
+TEST_F(ToDoListTest, MarkAsCompleted) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.markAsCompleted("Task 1");
-    EXPECT_TRUE(todoList.tasks[0]->isCompleted());
+    EXPECT_TRUE(todoList.getTasks()[0]->isCompleted());
 }
 
-TEST(ToDoListTest, OrganizeTasks) {
-    ToDoList todoList("tasks.txt");
-    todoList.addTask("Task 1", "Description 1", 2);
-    todoList.addTask("Task 2", "Description 2", 1);
+TEST_F(ToDoListTest, OrganizeTasks) {
+    todoList.addTask("Task 1", "Description 1", 1);
+    todoList.addTask("Task 2", "Description 2", 2);
     todoList.organizeTasks();
-    EXPECT_EQ(todoList.tasks[0]->getPriority(), 2);
-    EXPECT_EQ(todoList.tasks[1]->getPriority(), 1);
+    EXPECT_EQ(todoList.getTasks()[0]->getPriority(), 1);
+    EXPECT_EQ(todoList.getTasks()[1]->getPriority(), 2);
 }

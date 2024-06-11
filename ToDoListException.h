@@ -1,19 +1,12 @@
 #ifndef TODOLIST_TODOLISTEXCEPTION_H
 #define TODOLIST_TODOLISTEXCEPTION_H
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
-class ToDoListException : public std::exception {
+class ToDoListException : public std::runtime_error {
 public:
-    explicit ToDoListException(std::string message) : message(std::move(message)) {}
-
-    const char* what() const noexcept override {
-        return message.c_str();
-    }
-
-private:
-    std::string message;
+    explicit ToDoListException(const std::string& what) : std::runtime_error(what) {}
 };
 
-#endif //TODOLIST_TODOLISTEXCEPTION_H
+#endif // TODOLIST_TODOLISTEXCEPTION_H

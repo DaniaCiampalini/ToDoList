@@ -8,10 +8,12 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include "ToDoListException.h"
+#include <filesystem>
 
 class ToDoList {
 public:
-    explicit ToDoList(std::string  filename = "tasks.txt");
+    explicit ToDoList(std::string filename = "tasks.txt");
 
     void addTask(const std::string& title, const std::string& description, int priority);
     void removeTask(const std::string& title);
@@ -26,10 +28,22 @@ public:
     void saveTasks();
     void loadTasks();
 
-    std::vector<std::unique_ptr<ToDo> > tasks;
+    //method for clearing the tasks vector directly, using clear()
+    void clearTasks() {
+        tasks.clear();
+    }
+
+    //getter method for test cases to access the tasks
+    const std::vector<std::unique_ptr<ToDo>>& getTasks() const { return tasks; }
+
+
+    ToDo* findTask(const std::string& title);  //made public
 
 private:
     std::string filename;
+    std::vector<std::unique_ptr<ToDo>> tasks;
+
+    static std::string getFullPath(const std::string& filename);
 };
 
-#endif //TODOLIST_TODOLIST_H
+#endif // TODOLIST_TODOLIST_H
