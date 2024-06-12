@@ -13,7 +13,7 @@
 
 class ToDoList {
 public:
-    explicit ToDoList(std::string filename = "tasks.txt");
+    explicit ToDoList(const std::string& filename = "tasks.txt");
 
     void addTask(const std::string& title, const std::string& description, int priority);
     void removeTask(const std::string& title);
@@ -26,7 +26,7 @@ public:
     void organizeTasks();
 
     void saveTasks();
-    void loadTasks();
+    void loadTasks(const std::string& filename);
 
     //method for clearing the tasks vector directly, using clear()
     void clearTasks() {

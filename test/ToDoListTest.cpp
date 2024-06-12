@@ -12,6 +12,7 @@ protected:
     ToDoListTest() {
         tempFilename = "temp_tasks.txt";
         std::ofstream tempFile(tempFilename); //creates a temporary file
+        tempFile.close(); //file is properly created and can be opened by the ToDoList constructor
         todoList = ToDoList(tempFilename);
     }
 

@@ -3,9 +3,9 @@
 #include <filesystem>
 #include <memory>
 
-ToDoList::ToDoList(std::string filename) : filename(std::move(filename)) {
+ToDoList::ToDoList(const std::string& filename) : filename(filename) {  //removed std::move to avoid using moved object
     clearTasks(); //to clear the tasks vector before loading tasks from the file
-    loadTasks();
+    loadTasks(filename); //to load the tasks from the file specified by the filename parameter
 }
 
 void ToDoList::addTask(const std::string& title, const std::string& description, int priority) {
@@ -99,7 +99,8 @@ void ToDoList::saveTasks() {
     }
 }
 
-void ToDoList::loadTasks() {
+void ToDoList::loadTasks(const std::string& newFilename) {
+    filename = newFilename;
     std::string fullPath = getFullPath(filename);
     std::ifstream infile(fullPath);
     if (!infile.is_open()) {
