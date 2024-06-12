@@ -18,6 +18,7 @@ public:
     void addTask(const std::string& title, const std::string& description, int priority);
     void removeTask(const std::string& title);
     void modifyTask(const std::string& title, const std::string& newDescription);
+    void modifyPriority(const std::string& title, int newPriority);
 
     void displayTasks(const std::function<bool(const ToDo&)>& filter = [](const ToDo&) { return true; }) const;
     void displayTasksByPriority();

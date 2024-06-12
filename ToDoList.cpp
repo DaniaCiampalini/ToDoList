@@ -38,6 +38,18 @@ void ToDoList::modifyTask(const std::string& title, const std::string& newDescri
     }
 }
 
+void ToDoList::modifyPriority(const std::string &title, int newPriority) {
+    ToDo* taskToModify = findTask(title);
+    if (taskToModify) {
+        taskToModify->setPriority(newPriority);
+        saveTasks();
+    } else {
+        throw ToDoListException("Error: Task not found.");
+    }
+
+}
+
+
 void ToDoList::displayTasks(const std::function<bool(const ToDo&)>& filter) const {
     for (const auto& task : tasks) {
         if (filter(*task)) {
