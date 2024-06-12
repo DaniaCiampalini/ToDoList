@@ -116,7 +116,7 @@ void ToDoList::loadTasks() {
         std::getline(iss, description, ',');
         iss >> priority;
         std::getline(iss, completed, ',');
-        std::unique_ptr<ToDo> task(new ToDo(title, description, priority));  //manual allocation
+        auto task = std::make_unique<ToDo>(title, description, priority);  //using make_unique
         if (completed == "1") {
             task->markAsCompleted();
         }
