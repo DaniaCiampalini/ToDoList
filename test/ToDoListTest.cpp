@@ -55,14 +55,6 @@ TEST_F(ToDoListTest, MarkAsCompleted) {
     EXPECT_TRUE(todoList.getTasks()[0]->isCompleted());
 }
 
-TEST_F(ToDoListTest, OrganizeTasks) {
-    todoList.addTask("Task 1", "Description 1", 1);
-    todoList.addTask("Task 2", "Description 2", 2);
-    todoList.organizeTasks();
-    EXPECT_EQ(todoList.getTasks()[0]->getPriority(), 1);
-    EXPECT_EQ(todoList.getTasks()[1]->getPriority(), 2);
-}
-
 TEST_F(ToDoListTest, ModifyPriority) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.modifyPriority("Task 1", 3);
@@ -84,4 +76,50 @@ TEST_F(ToDoListTest, LoadTasks) {
     ToDoList loadedList(tempFilename);
     EXPECT_EQ(loadedList.getTasks().size(), 1);
     EXPECT_EQ(loadedList.getTasks()[0]->getTitle(), "Task 1");
+}
+
+TEST_F(ToDoListTest, DisplayTasks) {
+    testing::internal::CaptureStdout();
+    todoList.addTask("Task 2", "Description 2", 1);
+    todoList.addTask("Task 1", "Description 1", 2);
+    todoList.addTask("Task 3", "Description 3", 1);
+    todoList.addTask("Task 4", "Description 4", 5);
+    todoList.displayTasksByPriority();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_EQ(output, "Title: Task 4\n"
+                      "Description: Description 4\n"
+                      "Priority: 5\n"
+                      "Completed: No\n"
+                      "Title: Task 1\n"
+                      "Description: Description 1\n"
+                      "Priority: 2\n"
+                      "Completed: No\n"
+                      "Title: Task 2\n"
+                      "Description: Description 2\n"
+                      "Priority: 1\n"
+                      "Completed: No\n"
+                      "Title: Task 3\n"
+                      "Description: Description 3\n"
+                      "Priority: 1\n"
+                      "Completed: No\n");
+}
+
+TEST_F(ToDoListTest, FindTask) {
+    todoList.addTask("Task 1", "Description 1", 2);
+    ToDo* task = todoList.findTask("Task 1");
+    ASSERT_TRUE(task!= nullptr);
+    EXPECT_EQ(task->getTitle(), "Task 1");
+}
+
+TEST_F(ToDoListTest, LoadTasksFromFileThatDoesNotExist) {
+    todoList.loadTasks("non_existent_file.txt");
+    EXPECT_TRUE(todoList.getTasks().empty());
+}
+
+TEST_F(ToDoListTest, LoadTasksFromFileThatIsEmpty) {
+    std::ofstream file("empty_file.txt");
+    file.close();
+    todoList.loadTasks("empty_file.txt");
+    EXPECT_TRUE(todoList.getTasks().empty());
+    std::remove("empty_file.txt");
 }

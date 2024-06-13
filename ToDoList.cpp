@@ -74,13 +74,6 @@ void ToDoList::markAsCompleted(const std::string& title) {
     }
 }
 
-void ToDoList::organizeTasks() {
-    std::sort(tasks.begin(), tasks.end(), [](const std::unique_ptr<ToDo>& a, const std::unique_ptr<ToDo>& b) {
-        return a->getPriority() < b->getPriority();
-    });
-    saveTasks();
-}
-
 std::string ToDoList::getFullPath(const std::string& filename) {
     std::__fs::filesystem::path cwd = std::__fs::filesystem::current_path();
     std::__fs::filesystem::path fullPath = cwd / filename;

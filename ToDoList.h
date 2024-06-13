@@ -25,7 +25,6 @@ public:
     void displayTasksByPriority();
 
     void markAsCompleted(const std::string& title);
-    void organizeTasks();
 
     void saveTasks();
     void loadTasks(const std::string& filename);
