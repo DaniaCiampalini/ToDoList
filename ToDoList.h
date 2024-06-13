@@ -34,8 +34,10 @@ public:
         tasks.clear();
     }
 
-    //getter method for test cases to access the tasks
-    const std::vector<std::unique_ptr<ToDo>>& getTasks() const { return tasks; }
+    //allows unit tests to access individual tasks in the ToDoList without exposing the internal implementation of the tasks vector
+    ToDo& getTaskAt(int i) const {
+        return *tasks.at(i);
+    }
 
     ToDo* findTask(const std::string& title);  //made public
 

@@ -26,39 +26,37 @@ protected:
 };
 
 TEST_F(ToDoListTest, Constructor) {
-    EXPECT_TRUE(todoList.getTasks().empty());
+    EXPECT_TRUE(todoList.getTotalTasks() == 0);
 }
 
 TEST_F(ToDoListTest, AddTask) {
     todoList.addTask("Task 1", "Description 1", 2);
-    EXPECT_EQ(todoList.getTasks().size(), 1);
-    EXPECT_EQ(todoList.getTasks()[0]->getTitle(), "Task 1");
+    EXPECT_EQ(todoList.getTaskAt(0).getTitle(), "Task 1");
 }
 
 TEST_F(ToDoListTest, RemoveTask) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.addTask("Task 2", "Description 2", 1);
     todoList.removeTask("Task 1");
-    EXPECT_EQ(todoList.getTasks().size(), 1);
-    EXPECT_EQ(todoList.getTasks()[0]->getTitle(), "Task 2");
+    EXPECT_EQ(todoList.getTaskAt(0).getTitle(), "Task 2");
 }
 
 TEST_F(ToDoListTest, ModifyTask) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.modifyTask("Task 1", "New Description");
-    EXPECT_EQ(todoList.getTasks()[0]->getDescription(), "New Description");
+    EXPECT_EQ(todoList.getTaskAt(0).getDescription(), "New Description");
 }
 
 TEST_F(ToDoListTest, MarkAsCompleted) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.markAsCompleted("Task 1");
-    EXPECT_TRUE(todoList.getTasks()[0]->isCompleted());
+    EXPECT_TRUE(todoList.getTaskAt(0).isCompleted());
 }
 
 TEST_F(ToDoListTest, ModifyPriority) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.modifyPriority("Task 1", 3);
-    EXPECT_EQ(todoList.getTasks()[0]->getPriority(), 3);
+    EXPECT_EQ(todoList.getTaskAt(0).getPriority(), 3);
 }
 
 TEST_F(ToDoListTest, SaveTasks) {
@@ -74,8 +72,8 @@ TEST_F(ToDoListTest, LoadTasks) {
     todoList.addTask("Task 1", "Description 1", 2);
     todoList.saveTasks();
     ToDoList loadedList(tempFilename);
-    EXPECT_EQ(loadedList.getTasks().size(), 1);
-    EXPECT_EQ(loadedList.getTasks()[0]->getTitle(), "Task 1");
+    EXPECT_EQ(loadedList.getTotalTasks(), 1);
+    EXPECT_EQ(loadedList.getTaskAt(0).getTitle(), "Task 1");
 }
 
 TEST_F(ToDoListTest, DisplayTasks) {
@@ -113,13 +111,13 @@ TEST_F(ToDoListTest, FindTask) {
 
 TEST_F(ToDoListTest, LoadTasksFromFileThatDoesNotExist) {
     todoList.loadTasks("non_existent_file.txt");
-    EXPECT_TRUE(todoList.getTasks().empty());
+    EXPECT_TRUE(todoList.getTotalTasks() == 0);
 }
 
 TEST_F(ToDoListTest, LoadTasksFromFileThatIsEmpty) {
     std::ofstream file("empty_file.txt");
     file.close();
     todoList.loadTasks("empty_file.txt");
-    EXPECT_TRUE(todoList.getTasks().empty());
+    EXPECT_TRUE(todoList.getTotalTasks() == 0);
     std::remove("empty_file.txt");
 }
