@@ -35,9 +35,7 @@ public:
     }
 
     //allows unit tests to access individual tasks in the ToDoList without exposing the internal implementation of the tasks vector
-    ToDo& getTaskAt(int i) {  //must return a non-const reference
-        return *tasks.at(i);
-    }
+    ToDo& getTaskAt(int i);  //must return a non-const reference
 
     ToDo* findTask(const std::string& title);  //made public
 

@@ -90,6 +90,13 @@ std::string ToDoList::getFullPath(const std::string& filename) {
     return fullPath.string();
 }
 
+ToDo& ToDoList::getTaskAt(int i) {
+    if (i < 0 || i >= static_cast<int>(tasks.size())) {  //checks if the index i is within the bounds of the tasks vector
+        throw ToDoListException("Error: Index out of bounds.");
+    }
+    return *tasks.at(i);
+}
+
 ToDo* ToDoList::findTask(const std::string& title) {
     for (const auto& task : tasks) {
         if (task->getTitle() == title) {
