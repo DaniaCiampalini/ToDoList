@@ -10,26 +10,26 @@ int main() {
 
     std::cout << std::endl;
     std::cout << "**************** Welcome to my Todo List! ******************" << std::endl;
-    std::cout << "\nList of options: " << std::endl;
-    std::cout << "Number of total Todos: " << todoList.getTotalTasks() << std::endl;
-    std::cout << "Number of yet uncompleted ToDos: " << todoList.getUncompletedTasks() << std::endl;
-    std::cout << "1) Add a new Todo " << std::endl;
-    std::cout << "2) Remove a Todo " << std::endl;
-    std::cout << "3) Modify a Todo " << std::endl;
-    std::cout << "4) Mark a Todo as completed " << std::endl;
-    std::cout << "5) Modify priority of a Todo " << std::endl;
-    std::cout << "6) Display tasks by priority" << std::endl;
-    std::cout << "7) Display uncompleted todos" << std::endl;
-    std::cout << "8) Display all todos " << std::endl;
-    std::cout << "9) Save todos in a file" << std::endl;
-    std::cout << "10) Upload todos from a file" << std::endl;
-    std::cout << "11) Exit" << std::endl;
-    std::cout << "12) Display options" << std::endl;
 
     //loop until the user chooses to exit
     do {
         std::cout << "\n************************************************************" << std::endl;
-        std::cout << "\nChoose Your option(press 0 to exit and 12 to see the list again): ";
+        std::cout << "Number of total Todos: " << todoList.getTotalTasks() << std::endl;
+        std::cout << "Number of yet uncompleted ToDos: " << todoList.getUncompletedTasks() << std::endl;
+        std::cout << "\nList of options: " << std::endl;
+        std::cout << "1) Add a new Todo " << std::endl;
+        std::cout << "2) Remove a Todo " << std::endl;
+        std::cout << "3) Modify a Todo " << std::endl;
+        std::cout << "4) Mark a Todo as completed " << std::endl;
+        std::cout << "5) Modify priority of a Todo " << std::endl;
+        std::cout << "6) Display tasks by priority" << std::endl;
+        std::cout << "7) Display uncompleted todos" << std::endl;
+        std::cout << "8) Display all todos " << std::endl;
+        std::cout << "9) Save todos in a file" << std::endl;
+        std::cout << "10) Upload todos from a file" << std::endl;
+        std::cout << "11) Exit" << std::endl;
+
+        std::cout << "\nChoose Your option(press 0 to exit and 11 to exit): ";
         std::cin >> option;
 
         //variables to store user input
@@ -113,20 +113,6 @@ int main() {
                     break;
                 case 11:
                     stop = true;
-                    break;
-                case 12:
-                    std::cout << "\nList of options: " << std::endl;
-                    std::cout << "1) Add a new Todo" << std::endl;
-                    std::cout << "2) Remove a Todo" << std::endl;
-                    std::cout << "3) Modify a Todo" << std::endl;
-                    std::cout << "4) Mark a Todo as completed" << std::endl;
-                    std::cout << "5) Modify priority of a Todo" << std::endl;
-                    std::cout << "6) Display tasks by priority" << std::endl;
-                    std::cout << "7) Display uncompleted todos" << std::endl;
-                    std::cout << "8) Display all todos" << std::endl;
-                    std::cout << "9) Save todos in a file" << std::endl;
-                    std::cout << "10) Upload todos from a file" << std::endl;
-                    std::cout << "11) Exit" << std::endl;
                     break;
                 default:
                     std::cout << "Please enter a valid option!" << std::endl;
