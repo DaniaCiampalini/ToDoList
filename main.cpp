@@ -11,6 +11,8 @@ int main() {
     std::cout << std::endl;
     std::cout << "**************** Welcome to my Todo List! ******************" << std::endl;
     std::cout << "\nList of options: " << std::endl;
+    std::cout << "Number of total Todos: " << todoList.getTotalTasks() << std::endl;
+    std::cout << "Number of yet uncompleted ToDos: " << todoList.getUncompletedTasks() << std::endl;
     std::cout << "1) Add a new Todo " << std::endl;
     std::cout << "2) Remove a Todo " << std::endl;
     std::cout << "3) Modify a Todo " << std::endl;

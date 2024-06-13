@@ -28,6 +28,16 @@ void ToDoList::removeTask(const std::string& title) {
     }
 }
 
+int ToDoList::getUncompletedTasks() const {
+    int count = 0;
+    for (const auto& task : tasks) {
+        if (!task->isCompleted()) {
+            count++;
+        }
+    }
+    return count;
+}
+
 void ToDoList::modifyTask(const std::string& title, const std::string& newDescription) {
     ToDo* taskToModify = findTask(title);
     if (taskToModify) {

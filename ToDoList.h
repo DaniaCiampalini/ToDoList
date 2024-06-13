@@ -37,8 +37,10 @@ public:
     //getter method for test cases to access the tasks
     const std::vector<std::unique_ptr<ToDo>>& getTasks() const { return tasks; }
 
-
     ToDo* findTask(const std::string& title);  //made public
+
+    int getTotalTasks() const {return tasks.size();}
+    int getUncompletedTasks() const;
 
 private:
     std::string filename;
