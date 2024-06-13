@@ -17,7 +17,7 @@ void ToDoList::addTask(const std::string& title, const std::string& description,
 }
 
 void ToDoList::removeTask(const std::string& title) {
-    auto it = std::remove_if(tasks.begin(), tasks.end(), [&](const std::unique_ptr<ToDo>& task) {
+    auto it = std::remove_if(tasks.begin(), tasks.end(), [&](const std::unique_ptr<ToDo>& task) {  //std::remove_if only shifts the elements, erase() needed to remove them
         return task->getTitle() == title;
     });
     if (it != tasks.end()) {
@@ -48,7 +48,6 @@ void ToDoList::modifyPriority(const std::string &title, int newPriority) {
     }
 
 }
-
 
 void ToDoList::displayTasks(const std::function<bool(const ToDo&)>& filter) const {
     for (const auto& task : tasks) {

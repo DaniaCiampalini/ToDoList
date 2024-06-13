@@ -21,6 +21,7 @@ public:
     void modifyPriority(const std::string& title, int newPriority);
 
     void displayTasks(const std::function<bool(const ToDo&)>& filter = [](const ToDo&) { return true; }) const;
+    //filter parameter is by default a lambda function so that if no filter is provided, the method will display all tasks
     void displayTasksByPriority();
 
     void markAsCompleted(const std::string& title);
