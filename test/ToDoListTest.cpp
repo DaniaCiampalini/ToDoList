@@ -62,3 +62,26 @@ TEST_F(ToDoListTest, OrganizeTasks) {
     EXPECT_EQ(todoList.getTasks()[0]->getPriority(), 1);
     EXPECT_EQ(todoList.getTasks()[1]->getPriority(), 2);
 }
+
+TEST_F(ToDoListTest, ModifyPriority) {
+    todoList.addTask("Task 1", "Description 1", 2);
+    todoList.modifyPriority("Task 1", 3);
+    EXPECT_EQ(todoList.getTasks()[0]->getPriority(), 3);
+}
+
+TEST_F(ToDoListTest, SaveTasks) {
+    todoList.addTask("Task 1", "Description 1", 2);
+    todoList.saveTasks();
+    std::ifstream file(tempFilename);
+    std::string line;
+    std::getline(file, line);
+    EXPECT_EQ(line, "Task 1,Description 1,2,0");
+}
+
+TEST_F(ToDoListTest, LoadTasks) {
+    todoList.addTask("Task 1", "Description 1", 2);
+    todoList.saveTasks();
+    ToDoList loadedList(tempFilename);
+    EXPECT_EQ(loadedList.getTasks().size(), 1);
+    EXPECT_EQ(loadedList.getTasks()[0]->getTitle(), "Task 1");
+}
